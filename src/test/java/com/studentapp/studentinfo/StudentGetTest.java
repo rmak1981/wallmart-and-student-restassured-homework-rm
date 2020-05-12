@@ -1,5 +1,6 @@
 package com.studentapp.studentinfo;
 
+import com.studentapp.testbase.TestBase;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.BeforeClass;
@@ -10,13 +11,9 @@ import static io.restassured.RestAssured.given;
 /**
  * Created by Jay
  */
-public class StudentGetTest {
+public class StudentGetTest extends TestBase {
 
-    @BeforeClass
-    public static void init() {
-        RestAssured.baseURI = "http://localhost:8080";
-        RestAssured.basePath = "/student";
-    }
+
 
     @Test
     public void getAllStudentsInfo() {
@@ -28,7 +25,8 @@ public class StudentGetTest {
     }
 
     @Test
-    public void searchStudentWithParameter() {
+    public void searchStudentWithParameterWithLimit() {
+
         Response response =given()
                 .param("programme", "Computer Science")
                 .param("limit", 2)
@@ -37,6 +35,16 @@ public class StudentGetTest {
         response.then().statusCode(200);
     }
 
-    //Home Work
+    @Test
+    public void searchStudentWithParameter(){
+
+        Response response = given()
+                .param("courses","Financial Analysis")
+                .param("programme","Mechanical Engineering")
+                .when()
+                .get("/list");
+        response.then().statusCode(200);
+        System.out.println(response.prettyPrint());
+    }
 
 }
